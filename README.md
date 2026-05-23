@@ -1,49 +1,69 @@
-# pizza-analysis-italian
+<div align="center">
 
-Italian language analysis with elision handling, light stemmer, and stop words.
+# 🇮🇹 pizza-analysis-italian
 
-Part of the [Pizza](https://pizza.rs) search engine.
+**Italian text analysis plugin for [INFINI Pizza](https://pizza.rs)**
+
+[![Crate](https://img.shields.io/badge/crate-pizza--analysis--italian-blue)](https://github.com/pizza-rs/analysis-italian)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
+</div>
+
+---
+
+## Overview
+
+Italian language analysis with elision handling, light stemming, and stop words.
+Correctly processes Italian contracted articles (l', dell', un', etc.).
 
 ## Components
 
-| Name | Type | Description |
-|------|------|-------------|
-| `italian_elision` | Token Filter | Removes Italian elisions (l', dell', un', etc.) |
-| `italian_stem` | Token Filter | Italian light stemmer — removes common suffixes |
-| `italian_stop` | Token Filter | Italian stop words filter (279 words) |
-| `italian` | Analyzer | Full pipeline: lowercase → elision → stop → stem |
+| Type | Name | Description |
+|:-----|:-----|:------------|
+| TokenFilter | `italian_elision` | Strip Italian elided articles (l', dell', all', etc.) |
+| TokenFilter | `italian_light_stem` | Italian light stemmer |
+| TokenFilter | `italian_stop` | Italian stop words (279 entries) |
+| Analyzer | `italian` | Full pipeline: lowercase → elision → light_stem → stop |
 
-## Usage
+### Elision
 
-### Built-in Analyzer
+Italian contracts prepositions and articles before vowels:
+- `l'uomo` → `uomo`
+- `dell'arte` → `arte`
+- `un'altra` → `altra`
 
-```json
-{
-  "analyzer": {
-    "type": "italian"
-  }
-}
+## Example
+
+```rust
+use pizza_engine::analysis::AnalysisFactory;
+
+let mut factory = AnalysisFactory::new();
+pizza_analysis_italian::register_all(&mut factory);
+
+let analyzer = factory.get_analyzer("italian").unwrap();
+// "l'università" → ["universit"]
 ```
 
-### Custom Pipeline
+## Installation
 
-```json
-{
-  "analyzer": {
-    "type": "custom",
-    "tokenizer": "standard",
-    "filter": ["italian_elision", "italian_stem", "italian_stop"]
-  }
-}
+```toml
+[dependencies]
+pizza-analysis-italian = "0.1"
+```
+
+Or via `pizza-analysis-all`:
+
+```toml
+[dependencies]
+pizza-analysis-all = { version = "0.1", features = ["italian"] }
 ```
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT
 
-## Related Crates
+---
 
-- [analysis-core](https://github.com/pizza-rs/analysis-core) — Core analysis components and pipeline
-- [analysis-icu](https://github.com/pizza-rs/analysis-icu) — ICU Unicode normalization and tokenization
-- [analysis-english](https://github.com/pizza-rs/analysis-english) — English analysis
-- [analysis-all](https://github.com/pizza-rs/analysis-all) — Meta-crate registering all analyzers
+<div align="center">
+<sub>Part of the <a href="https://pizza.rs">INFINI Pizza</a> ecosystem</sub>
+</div>
