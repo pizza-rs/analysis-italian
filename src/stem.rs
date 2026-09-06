@@ -3,7 +3,8 @@
 use alloc::borrow::Cow;
 use alloc::string::String;
 use alloc::vec::Vec;
-use pizza_engine::analysis::{Token, TokenFilter};
+use pizza_engine::analysis::Token;
+use pizza_engine::analysis::TokenFilter;
 
 /// Italian light stemmer — removes common Italian suffixes.
 #[derive(Clone, Debug, Default)]
@@ -45,7 +46,11 @@ fn stem_italian_light(word: &str) -> String {
         result.truncate(result.len() - 5);
         return result;
     }
-    if result.ends_with('i') || result.ends_with('e') || result.ends_with('a') || result.ends_with('o') {
+    if result.ends_with('i')
+        || result.ends_with('e')
+        || result.ends_with('a')
+        || result.ends_with('o')
+    {
         result.pop();
     }
 

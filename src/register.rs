@@ -4,17 +4,25 @@ use alloc::boxed::Box;
 use alloc::vec;
 use alloc::vec::Vec;
 
-use pizza_engine::analysis::{
-    Analyzer, AnalysisFactory, LowercaseNormalizer, Normalizer, StandardTokenizer, TokenFilter,
-    Tokenizer,
-};
+use pizza_engine::analysis::AnalysisFactory;
+use pizza_engine::analysis::Analyzer;
+use pizza_engine::analysis::LowercaseNormalizer;
+use pizza_engine::analysis::Normalizer;
+use pizza_engine::analysis::StandardTokenizer;
+use pizza_engine::analysis::TokenFilter;
+use pizza_engine::analysis::Tokenizer;
 
-use crate::{ItalianElisionFilter, ItalianLightStemFilter, ItalianStopFilter};
+use crate::ItalianElisionFilter;
+use crate::ItalianLightStemFilter;
+use crate::ItalianStopFilter;
 
 /// Register Italian token filters and the `"italian"` analyzer.
 pub fn register_all(factory: &mut AnalysisFactory) {
     factory.register_token_filter("italian_elision", Box::new(ItalianElisionFilter::new()));
-    factory.register_token_filter("italian_light_stem", Box::new(ItalianLightStemFilter::new()));
+    factory.register_token_filter(
+        "italian_light_stem",
+        Box::new(ItalianLightStemFilter::new()),
+    );
     factory.register_token_filter("italian_stop", Box::new(ItalianStopFilter::new()));
 
     let normalizers: Vec<Box<dyn Normalizer>> = vec![Box::new(LowercaseNormalizer::new())];

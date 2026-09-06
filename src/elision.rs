@@ -4,11 +4,12 @@ use alloc::borrow::Cow;
 use alloc::string::String;
 use alloc::vec::Vec;
 use hashbrown::HashSet;
-use pizza_engine::analysis::{Token, TokenFilter};
+use pizza_engine::analysis::Token;
+use pizza_engine::analysis::TokenFilter;
 
 const ITALIAN_ARTICLES: &[&str] = &[
-    "c", "l", "all", "dall", "dell", "nell", "sull", "coll", "pell",
-    "gl", "agl", "dagl", "degl", "negl", "sugl", "un", "m", "t", "s", "v", "d",
+    "c", "l", "all", "dall", "dell", "nell", "sull", "coll", "pell", "gl", "agl", "dagl", "degl",
+    "negl", "sugl", "un", "m", "t", "s", "v", "d",
 ];
 
 /// Removes Italian article elisions (l', dell', etc.) from tokens.
