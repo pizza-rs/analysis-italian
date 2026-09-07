@@ -87,11 +87,15 @@ fn stem_construction() {
 #[test]
 fn stem_plural_i() {
     let f = ItalianLightStemFilter::new();
-    // "gatti" (cats) → stem
+    // Lucene's Italian light stemmer leaves 5-char "gatti" unchanged
+    // (itlight.txt: gatti→gatti); longer plurals do stem (gattoni→gatton).
     let mut token = make_token("gatti");
     let (deleted, _) = f.filter(&mut token);
     assert!(!deleted);
-    assert_ne!(token.term.as_ref(), "gatti");
+    assert_eq!(token.term.as_ref(), "gatti");
+    let mut token = make_token("gattoni");
+    f.filter(&mut token);
+    assert_eq!(token.term.as_ref(), "gatton");
 }
 
 #[test]
